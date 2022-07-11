@@ -1,6 +1,6 @@
 # battle-school-backend
 
-## 규칙
+### 규칙
 
 ### 1. 이슈 생성
 
