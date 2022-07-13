@@ -40,9 +40,9 @@
 
 |내용|커밋 작성 규칙|   
 | :-: | :-: |   
-|기능 추가|[feature] feature name|   
-|버그 수정|[bugfix] bugfix name|   
-|급한 버그 수정|[hotfix] hotfix name|   
-|문서 수정|[docs] docs name|
-|리팩토링|[refactor] refactor name|
-|테스트 수정|[test] test name|
+|기능 추가|[feature] #{issue number} feature name|   
+|버그 수정|[bugfix] #{issue number} bugfix name|   
+|급한 버그 수정|[hotfix] #{issue number} hotfix name|   
+|문서 수정|[docs] #{issue number} docs name|
+|리팩토링|[refactor] #{issue number} refactor name|
+|테스트 수정|[test] #{issue number} test name|
