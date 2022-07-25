@@ -19,10 +19,10 @@
 
 |내용|브랜치 이름 규칙|   
 | :-: | :-: |   
-|기능 수정|feature#{issue number}/feature name|   
-|버그 수정|bugfix#{issue number}/bugfix name|   
-|급한 버그 수정|hotfix#{issue number}/hotfix name|   
-|문서 수정|docs#{issue number}/docs name|
+|기능 수정|feature/#{issue number} feature name|   
+|버그 수정|bugfix/#{issue number} bugfix name|   
+|급한 버그 수정|hotfix/#{issue number} hotfix name|   
+|문서 수정|docs/#{issue number} docs name|
 
 ### 4. Pull Request 생성
 
