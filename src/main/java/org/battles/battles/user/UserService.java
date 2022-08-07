@@ -3,6 +3,8 @@ package org.battles.battles.user;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.JWTVerifier;
 import lombok.RequiredArgsConstructor;
+import org.battles.battles.exception.exception.CTokenUserNotFoundException;
+import org.battles.battles.exception.exception.CUserNotFoundException;
 import org.battles.battles.security.jwt.JwtTokenProvider;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -25,23 +27,20 @@ public class UserService implements UserDetailsService {
 
     @Transactional
     @Override
-    public User loadUserByUsername(String email) throws UsernameNotFoundException {
-//        User user = userRepository.findByEmail(email).orElseThrow(Exception);
-        User user = userRepository.findByEmail(email).get();
-        return user;
+    public User loadUserByUsername(String email) {
+        return userRepository.findByEmail(email).orElseThrow(CUserNotFoundException::new);
     }
 
-    // 예외 수정 필요
     @Transactional
-    public User loadUserByToken(String token) throws Exception {
+    public User loadUserByToken(String token) {
         return jwtTokenProvider.getDecodedToken(token)
-            .map(decodedJWT -> jwtTokenProvider.getUserEmailFromToken(decodedJWT))
+            .map(jwtTokenProvider::getUserEmailFromToken)
             .flatMap(userRepository::findByEmail)
-            .orElseThrow(Exception::new);
+            .orElseThrow(CTokenUserNotFoundException::new);
     }
 
     @Transactional
-    public Authentication getAuthentication(String token) throws Exception {
+    public Authentication getAuthentication(String token) {
         User user = loadUserByToken(token);
         return new UsernamePasswordAuthenticationToken(user, "", user.getAuthorities());
     }
