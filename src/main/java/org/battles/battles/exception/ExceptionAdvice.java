@@ -42,13 +42,13 @@ public class ExceptionAdvice {
 
     @ExceptionHandler(CUserNotFoundException.class)
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
-    protected CommonResult userNotFoundException(HttpServletRequest request, Exception e){
+    protected CommonResult userNotFoundException(HttpServletRequest request, Exception e) {
         return responseService.getFailResultWithMsg("해당 계정이 존재하지 않거나 잘못된 계정입니다.");
     }
 
     @ExceptionHandler(CTokenUserNotFoundException.class)
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
-    protected CommonResult TokenUserNotFoundException(HttpServletRequest request, Exception e){
+    protected CommonResult TokenUserNotFoundException(HttpServletRequest request, Exception e) {
         return responseService.getFailResultWithMsg("토큰에 해당하는 계정이 존재하지 않거나 잘못된 계정입니다.");
     }
 }

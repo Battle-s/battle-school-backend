@@ -9,4 +9,5 @@ import lombok.Setter;
 public class ListResult<T> extends CommonResult {
 
     private List<T> dataList;
+
 }
