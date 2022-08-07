@@ -12,18 +12,17 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 @Component
+@RequiredArgsConstructor
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
+
+    private final JwtTokenProvider jwtTokenProvider;
 
     @Override
     protected void doFilterInternal(@NotNull HttpServletRequest request,
         @NotNull HttpServletResponse response,
         @NotNull FilterChain filterChain) throws ServletException, IOException {
-        String token = getTokenFromRequest(request);
+        String token = jwtTokenProvider.getTokenFromRequest(request);
         // 나중에 토큰 유효 로직 추가
         filterChain.doFilter(request, response);
-    }
-
-    public String getTokenFromRequest(HttpServletRequest request) {
-        return request.getHeader("AUTH-TOKEN");
     }
 }

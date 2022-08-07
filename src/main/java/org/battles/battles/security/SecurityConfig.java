@@ -21,6 +21,8 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @EnableGlobalMethodSecurity(securedEnabled = true)
 public class SecurityConfig {
 
+    private final JwtTokenProvider jwtTokenProvider;
+
     @Bean
     PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
@@ -49,7 +51,7 @@ public class SecurityConfig {
 //            .antMatchers("/*/signin", "/*/signup").permitAll()
 //            .anyRequest().hasRole("USER")
 //            .and()
-            .addFilterBefore(new JwtAuthenticationFilter(),
+            .addFilterBefore(new JwtAuthenticationFilter(jwtTokenProvider),
                 UsernamePasswordAuthenticationFilter.class);
         return http.build();
     }
