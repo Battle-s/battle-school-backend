@@ -15,11 +15,12 @@ public class Comment extends TimeStamped {
     // fix me = fk mapping 필요
     @Column(nullable = false)
     private Long userId;
+
     // fix me = fk mapping 필요
     @Column(nullable = false)
     private Long postId;
 
-    @Column(nullable = false)
+    @Column(columnDefinition = "TEXT", nullable = false)
     private String content;
 
 }
