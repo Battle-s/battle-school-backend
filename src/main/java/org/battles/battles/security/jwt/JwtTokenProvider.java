@@ -1,5 +1,7 @@
 package org.battles.battles.security.jwt;
 
+import static java.util.Objects.nonNull;
+
 import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.JWT;
@@ -9,14 +11,17 @@ import java.util.Date;
 import java.util.Optional;
 import javax.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
+import org.battles.battles.exception.exception.CTokenUserNotFoundException;
+import org.battles.battles.user.User;
 import org.battles.battles.user.UserService;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.transaction.annotation.Transactional;
 import org.battles.battles.user.Token;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 @Component
+@RequiredArgsConstructor
 public class JwtTokenProvider {
 
     private static final String secretKey = "secret"; // 임시
@@ -38,6 +43,8 @@ public class JwtTokenProvider {
     private static final long REFRESH_TOKEN_VALID_MILISECOND = 1000L * 60 * 60 * 24 * 14; // 14일
 
     private final JWTVerifier jwtVerifier = JWT.require(algorithm).withIssuer(TOKEN_ISSUER).build();
+
+    private final UserService userService;
 
     @Transactional
     public Token createToken(String userEmail) {
@@ -79,5 +86,23 @@ public class JwtTokenProvider {
 
     public String getUserEmailFromToken(DecodedJWT decodedJWT) {
         return decodedJWT.getClaim(TOKEN_CLAIM).asString();
+    }
+
+    @Transactional
+    public User loadUserByToken(String token) {
+        return getDecodedToken(token)
+            .map(this::getUserEmailFromToken)
+            .flatMap(userService::getUserByEmail)
+            .orElseThrow(CTokenUserNotFoundException::new);
+    }
+
+    @Transactional
+    public Authentication getAuthentication(String token) {
+        User user = loadUserByToken(token);
+        return new UsernamePasswordAuthenticationToken(user, "", user.getAuthorities());
+    }
+
+    public boolean validateToken(String token) {
+        return nonNull(loadUserByToken(token));
     }
 }
