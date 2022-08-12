@@ -27,7 +27,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 @Table(name = "User_Table")
 public class User extends TimeStamped implements UserDetails {
 
-    private static final String Role_PREFIX = "";
+    private static final String Role_PREFIX = "ROLE_";
 
     // fix me = id auto increment 생각해볼 필요
     @Id
@@ -51,11 +51,9 @@ public class User extends TimeStamped implements UserDetails {
     private Role role;
 
     // fix me = fk mapping 필요
-    @Column(nullable = true)
     private Long schoolId;
 
     // fix me = fk mapping 필요
-    @Column(nullable = true)
     private Long profileImageId;
 
     @Column(nullable = false)
