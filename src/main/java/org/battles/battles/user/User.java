@@ -14,6 +14,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.battles.battles.common.Status;
 import org.battles.battles.common.TimeStamped;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -59,7 +60,8 @@ public class User extends TimeStamped implements UserDetails {
     private Long profileImageId;
 
     @Column(nullable = false)
-    private UserStatus status;
+    @Enumerated(value = EnumType.STRING)
+    private Status status;
 
 
     @Override
