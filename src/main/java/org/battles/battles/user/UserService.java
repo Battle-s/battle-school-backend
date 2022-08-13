@@ -10,6 +10,9 @@ import org.battles.battles.exception.exception.CEmailExistedException;
 import org.battles.battles.exception.exception.CNicknameExistedException;
 import org.battles.battles.exception.exception.CNotSchoolEmailException;
 import org.battles.battles.exception.exception.CUserNotFoundException;
+import org.battles.battles.school.School;
+import org.battles.battles.school.SchoolRepository;
+import org.battles.battles.school.SchoolService;
 import org.battles.battles.user.Dto.SignUpDto;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Service;
@@ -21,6 +24,8 @@ import org.battles.battles.common.ValidStringUtils.*;
 public class UserService implements UserDetailsService {
 
     private final UserRepository userRepository;
+
+    private final SchoolService schoolService;
 
     @Transactional
     @Override
@@ -55,16 +60,20 @@ public class UserService implements UserDetailsService {
         if (userRepository.findUserByNickName(signUpDto.getNickName()).isPresent()) {
             throw new CNicknameExistedException();
         }
-        // 학교 추가 로직
+
+        School school = schoolService.getSchoolId(signUpDto.getSchoolName(),
+            getSchoolDomain(signUpDto.getEmail()));
+
         User newUser = User.builder()
             .email(ValidStringUtils.getValidEmail(signUpDto.getEmail()))
             .name(signUpDto.getName())
             .nickName(signUpDto.getNickName())
-//            .schoolId()
+            .school(school)
             .phoneNumber(signUpDto.getPhoneNumber())
             .role(Role.USER)
             .status(UserStatus.ALIVE)
             .build();
+
         return userRepository.save(newUser);
     }
 
@@ -77,4 +86,8 @@ public class UserService implements UserDetailsService {
         return email.contains("ac.kr") || email.contains("edu");
     }
 
+    private String getSchoolDomain(String email) {
+        int idx = email.indexOf("@");
+        return email.substring(idx + 1);
+    }
 }

@@ -9,12 +9,16 @@ import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.battles.battles.common.TimeStamped;
+import org.battles.battles.school.School;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -50,8 +54,9 @@ public class User extends TimeStamped implements UserDetails {
     @Enumerated(value = EnumType.STRING)
     private Role role;
 
-    // fix me = fk mapping 필요
-    private Long schoolId;
+    @ManyToOne
+    @JoinColumn(name = "schoolId")
+    private School school;
 
     // fix me = fk mapping 필요
     private Long profileImageId;
