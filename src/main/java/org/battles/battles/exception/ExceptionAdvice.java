@@ -9,6 +9,7 @@ import org.battles.battles.exception.exception.CEmailExistedException;
 import org.battles.battles.exception.exception.CNicknameExistedException;
 import org.battles.battles.exception.exception.CNotSchoolEmailException;
 import org.battles.battles.exception.exception.CNotValidEmailException;
+import org.battles.battles.exception.exception.CSchoolNameSchoolDomainException;
 import org.battles.battles.exception.exception.CTokenUserNotFoundException;
 import org.battles.battles.exception.exception.CUserNotFoundException;
 import org.battles.battles.response.CommonResult;
@@ -80,5 +81,11 @@ public class ExceptionAdvice {
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     protected CommonResult NicknameExistedException(HttpServletRequest request, Exception e) {
         return responseService.getFailResultWithMsg("이미 존재하는 닉네임입니다. 다른 닉네임을 입력해주세요.");
+    }
+
+    @ExceptionHandler(CSchoolNameSchoolDomainException.class)
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    protected CommonResult SchoolNameSchoolDomainException(HttpServletRequest request, Exception e) {
+        return responseService.getFailResultWithMsg("학교 이메일과 학교명을 확인하고 다시 입력해주세요.");
     }
 }
