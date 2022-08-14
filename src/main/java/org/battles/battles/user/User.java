@@ -11,12 +11,12 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.battles.battles.common.Status;
 import org.battles.battles.common.TimeStamped;
 import org.battles.battles.school.School;
@@ -62,6 +62,7 @@ public class User extends TimeStamped implements UserDetails {
     // fix me = fk mapping 필요
     private Long profileImageId;
 
+    @Setter
     @Column(nullable = false)
     @Enumerated(value = EnumType.STRING)
     private Status status;
