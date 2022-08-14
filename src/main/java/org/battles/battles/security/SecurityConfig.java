@@ -1,27 +1,18 @@
 package org.battles.battles.security;
 
 import lombok.RequiredArgsConstructor;
-import org.battles.battles.security.jwt.CAccessDeniedHandler;
-import org.battles.battles.security.jwt.CAuthenticationEntryPoint;
 import org.battles.battles.security.jwt.JwtAuthenticationFilter;
-import org.battles.battles.security.jwt.JwtTokenProvider;
-import org.battles.battles.user.UserService;
+import org.battles.battles.user.AuthService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.config.Customizer;
-import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
-import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
-import org.springframework.security.core.userdetails.User;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
@@ -30,7 +21,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @RequiredArgsConstructor
 public class SecurityConfig {
 
-    private final JwtTokenProvider jwtTokenProvider;
+    private final AuthService authService;
 
     private final CorConfig corConfig;
 
@@ -43,7 +34,7 @@ public class SecurityConfig {
     public WebSecurityCustomizer configure() {
         return (web) -> web.ignoring()
             .antMatchers("/swagger-ui/index.html", "/h2-console", "/h2-console/*")
-            .antMatchers("/api/user/signin", "/api/user/signup", "/api/user/*",
+            .antMatchers("/api/user/signin", "/api/user/signup", "/api/user/all",
                 "/api/user/signup/*");
     }
 
@@ -59,7 +50,10 @@ public class SecurityConfig {
             .and()
             .authorizeRequests()
             .antMatchers("/api/user/**").access("hasRole('ROLE_USER')")
-            .anyRequest().permitAll();
+            .anyRequest().permitAll()
+            .and()
+            .addFilterBefore(new JwtAuthenticationFilter(authService),
+                UsernamePasswordAuthenticationFilter.class);
         http.headers().frameOptions().disable();
         return http.build();
     }
