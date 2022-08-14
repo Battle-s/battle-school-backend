@@ -12,6 +12,7 @@ import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.exceptions.JWTVerificationException;
 import com.auth0.jwt.interfaces.DecodedJWT;
 import lombok.RequiredArgsConstructor;
+import org.battles.battles.common.Status;
 import org.battles.battles.common.ValidStringUtils;
 import org.battles.battles.exception.exception.*;
 import org.battles.battles.school.School;
@@ -89,7 +90,7 @@ public class AuthService implements UserDetailsService {
             .school(school)
             .phoneNumber(signUpDto.getPhoneNumber())
             .role(Role.USER)
-            .status(UserStatus.ALIVE)
+            .status(Status.ACTIVE)
             .build();
 
         return userRepository.save(newUser);
