@@ -1,5 +1,6 @@
 package org.battles.battles.school;
 
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.battles.battles.exception.exception.CSchoolNameSchoolDomainException;
 import org.springframework.stereotype.Service;
@@ -30,6 +31,11 @@ public class SchoolService {
             schoolRepository.save(school);
         }
         return school;
+    }
+
+    @Transactional
+    public List<School> getAllSchools() {
+        return schoolRepository.findAll();
     }
 
 }
