@@ -70,4 +70,16 @@ public class UserController {
         return responseService.getSingleResult(
             authService.refreshTokenAccessToken(email, refreshToken));
     }
+
+    @ApiOperation(value = "회원 탈퇴", notes = "회원 계정을 삭제한다")
+    @ApiImplicitParams({
+        @ApiImplicitParam(name = "AUTH-TOKEN", value = "로그인 성공 후 access_token", required = true, dataType = "String", paramType = "header")
+    })
+    @DeleteMapping("/{userId}")
+    public CommonResult deleteUser(@PathVariable Long userId) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String email = authentication.getName();
+        userService.deleteUser(email, userId);
+        return responseService.getSuccessResult();
+    }
 }
