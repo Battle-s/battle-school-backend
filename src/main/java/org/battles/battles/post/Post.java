@@ -1,20 +1,30 @@
 package org.battles.battles.post;
 
+<<<<<<< HEAD
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.battles.battles.common.Status;
+=======
+>>>>>>> ed7e99aa30fa1d10ab6f4a36e382de1467342968
 import org.battles.battles.common.TimeStamped;
 
 import javax.persistence.*;
 
+<<<<<<< HEAD
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
 @Table(name = "Post_Table")
 public class Post extends TimeStamped{
+=======
+@Entity
+@Table(name = "Post_Table")
+
+public class Post extends TimeStamped {
+>>>>>>> ed7e99aa30fa1d10ab6f4a36e382de1467342968
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long postId;
@@ -37,6 +47,7 @@ public class Post extends TimeStamped{
     @Enumerated(value = EnumType.STRING)
     private PostType postType;
 
+<<<<<<< HEAD
     @Column(nullable = false)
     @Enumerated(value = EnumType.STRING)
     private Status status;
@@ -51,4 +62,6 @@ public class Post extends TimeStamped{
         this.status = status;
     }
 
+=======
+>>>>>>> ed7e99aa30fa1d10ab6f4a36e382de1467342968
 }

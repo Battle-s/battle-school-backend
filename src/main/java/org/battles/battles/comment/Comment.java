@@ -5,6 +5,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.battles.battles.common.Status;
+
 import org.battles.battles.common.TimeStamped;
 
 import javax.persistence.*;
@@ -29,6 +30,7 @@ public class Comment extends TimeStamped {
 
     @Column(columnDefinition = "TEXT", nullable = false)
     private String content;
+
 
     @Column(nullable = false)
     @Enumerated(value = EnumType.STRING)
