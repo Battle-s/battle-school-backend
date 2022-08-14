@@ -1,21 +1,14 @@
 package org.battles.battles.user;
 
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiResponse;
-import io.swagger.annotations.ApiResponses;
+import io.swagger.annotations.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.battles.battles.response.CommonResult;
 import org.battles.battles.response.ResponseService;
-import org.battles.battles.security.jwt.JwtTokenProvider;
 import org.battles.battles.user.Dto.SignUpDto;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.web.bind.annotation.*;
 
 @Api(tags = {"1. 사용자 컨트롤러"})
 @RestController
@@ -26,26 +19,29 @@ public class UserController {
 
     private final ResponseService responseService;
 
-    private final JwtTokenProvider jwtTokenProvider;
-
     private final UserService userService;
+
+    private final AuthService authService;
 
     @ApiOperation(value = "회원가입", notes = "소셜 로그인한 이메일과 회원 정보를 입력하여 계정을 생성한다.")
     @PostMapping("/signup")
     public CommonResult SignUp(@RequestBody SignUpDto signUpDto) {
-        userService.signUp(signUpDto);
-        Token token = jwtTokenProvider.createToken(signUpDto.getEmail());
+        authService.signUp(signUpDto);
+        Token token = authService.createToken(signUpDto.getEmail());
         return responseService.getSingleResult(token);
     }
 
     @ApiOperation(value = "로그인", notes = "소셜 로그인한 이메일로 로그인을 한다.")
     @PostMapping("/signin")
     public CommonResult SignIn(@RequestBody String email) {
-        userService.signin(email);
-        Token token = jwtTokenProvider.createToken(email);
+        authService.signin(email);
+        Token token = authService.createToken(email);
         return responseService.getSingleResult(token);
     }
 
+    @ApiImplicitParams({
+        @ApiImplicitParam(name = "AUTH-TOKEN", value = "로그인 성공 후 access_token", required = true, dataType = "String", paramType = "header")
+    })
     @ApiOperation(value = "모든 사용자 조회", notes = "모든 사용자 조회한다.")
     @GetMapping("/all")
     public CommonResult getAllUsers() {
@@ -53,18 +49,25 @@ public class UserController {
     }
 
     @ApiOperation(value = "닉네임 중복 조회", notes = "닉네임 중복 여부를 조회한다.")
-    @ApiResponses({
-        @ApiResponse(code = 200, message = "OK !!"),
-        @ApiResponse(code = 400, message = "BAD REQUEST !!"),
-        @ApiResponse(code = 404, message = "NOT FOUND !!"),
-        @ApiResponse(code = 500, message = "INTERNAL SERVER ERROR !!")
-    })
     @GetMapping("/signup/{nickName}")
     public CommonResult isExistedNickName(@PathVariable String nickName) {
-        if (userService.isExistedNickName(nickName)) {
+        if (authService.isExistedNickName(nickName)) {
             return responseService.getSuccessResult();
         } else {
             return responseService.getFailResult();
         }
+    }
+
+    @ApiOperation(value = "AccessToken 재발급", notes = "RefreshToken을 헤더에 넣어 AccessToken을 재발급 받는다")
+    @ApiImplicitParams({
+        @ApiImplicitParam(name = "AUTH-TOKEN", value = "로그인 성공 후 refresh_token", required = true, dataType = "String", paramType = "header")
+    })
+    @GetMapping("/token")
+    public CommonResult getAccessTokenFromRefreshToken(
+        @RequestHeader(value = "AUTH-TOKEN") String refreshToken) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String email = authentication.getName();
+        return responseService.getSingleResult(
+            authService.refreshTokenAccessToken(email, refreshToken));
     }
 }

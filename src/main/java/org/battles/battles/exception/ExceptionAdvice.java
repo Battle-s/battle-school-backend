@@ -3,15 +3,7 @@ package org.battles.battles.exception;
 import io.swagger.annotations.Api;
 import javax.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
-import org.battles.battles.exception.exception.CAccessDeniedException;
-import org.battles.battles.exception.exception.CAuthenticationEntryPointException;
-import org.battles.battles.exception.exception.CEmailExistedException;
-import org.battles.battles.exception.exception.CNicknameExistedException;
-import org.battles.battles.exception.exception.CNotSchoolEmailException;
-import org.battles.battles.exception.exception.CNotValidEmailException;
-import org.battles.battles.exception.exception.CSchoolNameSchoolDomainException;
-import org.battles.battles.exception.exception.CTokenUserNotFoundException;
-import org.battles.battles.exception.exception.CUserNotFoundException;
+import org.battles.battles.exception.exception.*;
 import org.battles.battles.response.CommonResult;
 import org.battles.battles.response.ResponseService;
 import org.springframework.http.HttpStatus;
@@ -87,5 +79,17 @@ public class ExceptionAdvice {
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     protected CommonResult SchoolNameSchoolDomainException(HttpServletRequest request, Exception e) {
         return responseService.getFailResultWithMsg("학교 이메일과 학교명을 확인하고 다시 입력해주세요.");
+    }
+
+    @ExceptionHandler(CExpiredTokenException.class)
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    protected CommonResult ExpiredTokenException(HttpServletRequest request, Exception e) {
+        return responseService.getFailResultWithMsg("만료된 토큰입니다. 다시 입력해주세요.");
+    }
+
+    @ExceptionHandler(CRefreshTokenException.class)
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    protected CommonResult RefreshTokenException(HttpServletRequest request, Exception e) {
+        return responseService.getFailResultWithMsg("잘못된 Refresh 토큰입니다. 다시 입력해주세요.");
     }
 }
