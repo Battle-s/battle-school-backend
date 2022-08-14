@@ -1,11 +1,15 @@
 package org.battles.battles.user;
 
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.Getter;
+import org.battles.battles.common.TimeStamped;
 
-@Data
+@Getter
 @Builder
-public class Token {
+@AllArgsConstructor
+public class Token extends TimeStamped {
 
     private final String accessToken;
 

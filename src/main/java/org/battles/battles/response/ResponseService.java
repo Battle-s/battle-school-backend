@@ -6,6 +6,27 @@ import org.springframework.stereotype.Service;
 @Service
 public class ResponseService {
 
+    public enum CommonResponse {
+        SUCCESS(0, "성공"),
+        FAIL(-1, "실패");
+
+        int code;
+        String msg;
+
+        CommonResponse(int code, String msg) {
+            this.code = code;
+            this.msg = msg;
+        }
+
+        public int getCode() {
+            return code;
+        }
+
+        public String getMsg() {
+            return msg;
+        }
+    }
+
     public <T> SingleResult<T> getSingleResult(T data) {
         SingleResult<T> result = new SingleResult<>();
         result.setData(data);
@@ -15,7 +36,7 @@ public class ResponseService {
 
     public <T> ListResult<T> getListResult(List<T> list) {
         ListResult<T> result = new ListResult<>();
-        result.setDataList(list);
+        result.setList(list);
         setSuccessResult(result);
         return result;
     }
@@ -29,22 +50,24 @@ public class ResponseService {
     public CommonResult getFailResult() {
         CommonResult result = new CommonResult();
         result.setSuccess(false);
-        result.setCode(CommonResultType.FAIL.getCode());
-        result.setMsg(CommonResultType.FAIL.getMsg());
+        result.setCode(CommonResponse.FAIL.getCode());
+        result.setMsg(CommonResponse.FAIL.getMsg());
         return result;
     }
 
     public CommonResult getFailResultWithMsg(String msg) {
         CommonResult result = new CommonResult();
         result.setSuccess(false);
-        result.setCode(CommonResultType.FAIL.getCode());
+        result.setCode(CommonResponse.FAIL.getCode());
         result.setMsg(msg);
         return result;
     }
 
     private void setSuccessResult(CommonResult result) {
         result.setSuccess(true);
-        result.setCode(CommonResultType.SUCCESS.getCode());
-        result.setMsg(CommonResultType.SUCCESS.getMsg());
+        result.setCode(CommonResponse.SUCCESS.getCode());
+        result.setMsg(CommonResponse.SUCCESS.getMsg());
     }
 }
+
+

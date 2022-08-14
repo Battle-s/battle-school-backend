@@ -8,6 +8,5 @@ import lombok.Setter;
 @Setter
 public class ListResult<T> extends CommonResult {
 
-    private List<T> dataList;
-
+    private List<T> list;
 }
