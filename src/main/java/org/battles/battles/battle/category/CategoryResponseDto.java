@@ -19,6 +19,8 @@ public class CategoryResponseDto {
 
     private String categoryName;
 
+    private String areaName;
+
     private Long min;
 
     private Long max;
@@ -29,6 +31,7 @@ public class CategoryResponseDto {
 
     private User organizer;
 
+    // 시즌 정보 수정
     private Long seasonId;
 
     private Long createdAt;
