@@ -1,27 +1,19 @@
 package org.battles.battles.battle.category;
 
-import java.time.LocalDateTime;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.battles.battles.common.Status;
 
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
 @Setter
-public class CategoryResponseDto {
-
-    private Long categoryId;
+public class CategoryRequestDto {
 
     private String categoryName;
 
     private CategoryArea categoryArea;
-
-    private LocalDateTime createdAt;
-
-    private Status status;
 }
