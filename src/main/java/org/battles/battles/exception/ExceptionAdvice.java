@@ -92,4 +92,16 @@ public class ExceptionAdvice {
     protected CommonResult RefreshTokenException(HttpServletRequest request, Exception e) {
         return responseService.getFailResultWithMsg("잘못된 Refresh 토큰입니다. 다시 입력해주세요.");
     }
+
+    @ExceptionHandler(CCategoryExistedException.class)
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    protected CommonResult CategoryExistedException(HttpServletRequest request, Exception e) {
+        return responseService.getFailResultWithMsg("이미 존재하는 경기 종목입니다.");
+    }
+
+    @ExceptionHandler(CCategoryNotFoundException.class)
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    protected CommonResult CategoryNotFoundException(HttpServletRequest request, Exception e) {
+        return responseService.getFailResultWithMsg("존재하지 않는 경기 종목입니다.");
+    }
 }

@@ -31,7 +31,9 @@ public class Category extends TimeStamped {
     private String name;
 
     @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
     private CategoryArea categoryArea;
 
+    @Column(nullable = false)
     private Status status;
 }
