@@ -12,6 +12,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.battles.battles.common.Status;
 import org.battles.battles.common.TimeStamped;
 
@@ -34,6 +35,8 @@ public class Category extends TimeStamped {
     @Column(nullable = false)
     private CategoryArea categoryArea;
 
+    @Setter
+    @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private Status status;
 }

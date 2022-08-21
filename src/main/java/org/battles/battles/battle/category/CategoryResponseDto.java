@@ -24,4 +24,12 @@ public class CategoryResponseDto {
     private LocalDateTime createdAt;
 
     private Status status;
+
+    public CategoryResponseDto(Category category) {
+        this.categoryId = category.getCategoryId();
+        this.categoryName = category.getName();
+        this.categoryArea = category.getCategoryArea();
+        this.createdAt = category.getCreatedAt();
+        this.status = category.getStatus();
+    }
 }
