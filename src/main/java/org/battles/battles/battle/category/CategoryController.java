@@ -23,7 +23,8 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/api")
 @Slf4j
 public class CategoryController {
-    private  final ResponseService responseService;
+
+    private final ResponseService responseService;
 
     private final CategoryService categoryService;
 
@@ -70,7 +71,8 @@ public class CategoryController {
     @ApiOperation(value = "진행 중인 분야별 종목 목록 조회", notes = "분야별 진행 중인 모든 경기 종목을 조회한다. SPORT, ESPORT, BOARDGAME, STUDY, ETC")
     @GetMapping("/categories/{categoryArea}/active")
     public CommonResult getActiveCategoriesByArea(@PathVariable CategoryArea categoryArea) {
-        return responseService.getListResult(categoryService.findAllCategoryByAreaAndStatus(categoryArea, Status.ACTIVE));
+        return responseService.getListResult(
+            categoryService.findAllCategoryByAreaAndStatus(categoryArea, Status.ACTIVE));
     }
 
     @ApiImplicitParams({
@@ -79,7 +81,7 @@ public class CategoryController {
     @ApiOperation(value = "종목 상태 조회", notes = "경기 종목이 진행 중인지 조회한다")
     @GetMapping("/categories/{categoryName}/active")
     public CommonResult isCategoryActive(@PathVariable String categoryName) {
-        if(categoryService.isActive(categoryName)){
+        if (categoryService.isActive(categoryName)) {
             return responseService.getSuccessResult();
         }
         return responseService.getFailResultWithMsg("진행 중이지 않습니다.");
@@ -104,7 +106,4 @@ public class CategoryController {
         categoryService.setAllInActive();
         return responseService.getSuccessResult();
     }
-
-
-
 }

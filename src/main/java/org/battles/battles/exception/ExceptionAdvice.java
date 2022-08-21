@@ -104,4 +104,22 @@ public class ExceptionAdvice {
     protected CommonResult CategoryNotFoundException(HttpServletRequest request, Exception e) {
         return responseService.getFailResultWithMsg("존재하지 않는 경기 종목입니다.");
     }
+
+    @ExceptionHandler(CDateTimeValidException.class)
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    protected CommonResult DateTimeValidException(HttpServletRequest request, Exception e) {
+        return responseService.getFailResultWithMsg("유효하지 않은 날짜 및 시간 데이터입니다. 확인한 뒤 다시 입력해주세요.");
+    }
+
+    @ExceptionHandler(CSeasonStartValidException.class)
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    protected CommonResult SeasonStartValidException(HttpServletRequest request, Exception e) {
+        return responseService.getFailResultWithMsg("아직 이전 시즌이 진행 중입니다. 날짜 및 시간 데이터를 다시 확인해주세요. ");
+    }
+
+    @ExceptionHandler(CSeasonNotFoundException.class)
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    protected CommonResult SeasonNotFoundException(HttpServletRequest request, Exception e) {
+        return responseService.getFailResultWithMsg("해당 시즌이 존재하지 않습니다.");
+    }
 }
