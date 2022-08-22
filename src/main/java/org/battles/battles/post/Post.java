@@ -6,6 +6,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.battles.battles.common.Status;
 import org.battles.battles.common.TimeStamped;
+import org.battles.battles.school.School;
+import org.battles.battles.user.User;
 
 import javax.persistence.*;
 
@@ -15,20 +17,21 @@ import javax.persistence.*;
 @AllArgsConstructor
 @Entity
 @Table(name = "Post_Table")
-
 public class Post extends TimeStamped {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long postId;
 
-    // fix me = fk mapping 필요
-    @Column(nullable = false)
-    private Long userId;
+     // fix me = fk mapping 필요
+    @ManyToOne
+    @JoinColumn(name = "userId", nullable = true)
+    private User user;
 
     // fix me = fk mapping 필요
-    @Column(nullable = true)
-    private Long schoolId;
+    @ManyToOne
+    @JoinColumn(name = "schoolId", nullable = true)
+    private School school;
 
     @Column(nullable = false)
     private String title;
@@ -45,9 +48,9 @@ public class Post extends TimeStamped {
     private Status status;
 
     @Builder
-    public Post(Long userId, Long schoolId, String title, String content, PostType postType, Status status) {
-        this.userId = userId;
-        this.schoolId = schoolId;
+    public Post(User user, School school, String title, String content, PostType postType, Status status) {
+        this.user = user;
+        this.school = school;
         this.title = title;
         this.content = content;
         this.postType = postType;
