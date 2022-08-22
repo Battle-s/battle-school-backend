@@ -68,28 +68,39 @@ public class CategoryService {
     @Transactional
     public boolean isActive(String categoryName) {
         Optional<Category> category = categoryRepository.findByName(categoryName);
+
         if (category.isEmpty()) {
             throw new CCategoryNotFoundException();
         }
+
         return category.get().getStatus().equals(Status.ACTIVE);
     }
 
     @Transactional
     public void setActive(String categoryName) {
         Optional<Category> category = categoryRepository.findByName(categoryName);
+
         if (category.isEmpty()) {
             throw new CCategoryNotFoundException();
         }
+
         category.get().setStatus(Status.ACTIVE);
+
         categoryRepository.save(category.get());
     }
 
     @Transactional
     public void setAllInActive() {
         List<Category> categories = categoryRepository.findAll();
+
         for (Category category : categories) {
             category.setStatus(Status.INACTIVE);
             categoryRepository.save(category);
         }
+    }
+
+    @Transactional
+    public Optional<Category> getCategoryByName(String name) {
+        return categoryRepository.findByName(name);
     }
 }

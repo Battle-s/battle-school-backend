@@ -37,9 +37,6 @@ public class SeasonController {
         return responseService.getSingleResult(seasonService.create(seasonRequestDto));
     }
 
-    @ApiImplicitParams({
-        @ApiImplicitParam(name = "AUTH-TOKEN", value = "로그인 성공 후 access_token", required = true, dataType = "String", paramType = "header")
-    })
     @ApiOperation(value = "시즌 목록 조회", notes = "시즌 목록을 조회한다")
     @GetMapping("/seasons")
     public CommonResult getSeasons() {
@@ -53,19 +50,19 @@ public class SeasonController {
     @PatchMapping("/seasons/{seasonId}")
     public CommonResult setSeasonInactive(@PathVariable Long seasonId) {
         seasonService.setSeasonInactive(seasonId);
+
         return responseService.getSuccessResult();
     }
 
-    @ApiImplicitParams({
-        @ApiImplicitParam(name = "AUTH-TOKEN", value = "로그인 성공 후 access_token", required = true, dataType = "String", paramType = "header")
-    })
     @ApiOperation(value = "현재 시즌 조회", notes = "현재 시즌을 조회한다")
     @GetMapping("/seasons/now")
     public CommonResult getNowSeason() {
         Optional<Season> season = seasonService.getNowSeason();
+
         if (season.isEmpty()) {
             return responseService.getFailResultWithMsg("현재 진행 중인 시즌이 존재하지 않습니다.");
         }
+
         return responseService.getSingleResult(season.get());
     }
 }
