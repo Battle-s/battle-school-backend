@@ -92,4 +92,10 @@ public class ExceptionAdvice {
     protected CommonResult RefreshTokenException(HttpServletRequest request, Exception e) {
         return responseService.getFailResultWithMsg("잘못된 Refresh 토큰입니다. 다시 입력해주세요.");
     }
+
+    @ExceptionHandler(CSchoolNotFoundException.class)
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    protected CommonResult SchoolNotFoundException(HttpServletRequest request, Exception e) {
+        return responseService.getFailResultWithMsg("해당 학교가 존재하지 않거나 잘못된 학교입니다.");
+    }
 }

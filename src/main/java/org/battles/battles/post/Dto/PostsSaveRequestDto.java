@@ -6,12 +6,16 @@ import lombok.NoArgsConstructor;
 import org.battles.battles.common.Status;
 import org.battles.battles.post.Post;
 import org.battles.battles.post.PostType;
+import org.battles.battles.school.School;
+
+import java.util.Optional;
 
 @Getter
 @NoArgsConstructor
 public class PostsSaveRequestDto {
     private String title;
     private String content;
+
 
 
     @Builder
@@ -21,12 +25,22 @@ public class PostsSaveRequestDto {
 
     }
 
-    public Post toEntity() {
+    public Post toEntity(PostType postType) {
         return Post.builder()
                 .title(title)
                 .content(content)
                 .status(Status.ACTIVE)
-                .postType(PostType.ENTIRE)
+                .postType(postType)
+                .build();
+    }
+
+    public Post toEntity2(PostType postType, School school) {
+        return Post.builder()
+                .title(title)
+                .content(content)
+                .status(Status.ACTIVE)
+                .postType(postType)
+                .school(school)
                 .build();
     }
 }
