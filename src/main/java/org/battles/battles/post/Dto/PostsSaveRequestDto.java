@@ -7,6 +7,7 @@ import org.battles.battles.common.Status;
 import org.battles.battles.post.Post;
 import org.battles.battles.post.PostType;
 import org.battles.battles.school.School;
+import org.battles.battles.user.User;
 
 import java.util.Optional;
 
@@ -25,22 +26,24 @@ public class PostsSaveRequestDto {
 
     }
 
-    public Post toEntity(PostType postType) {
+    public Post toEntity(PostType postType, User user) {
         return Post.builder()
                 .title(title)
                 .content(content)
                 .status(Status.ACTIVE)
                 .postType(postType)
+                .user(user)
                 .build();
     }
 
-    public Post toEntity2(PostType postType, School school) {
+    public Post toEntity2(PostType postType, School school, User user) {
         return Post.builder()
                 .title(title)
                 .content(content)
                 .status(Status.ACTIVE)
                 .postType(postType)
                 .school(school)
+                .user(user)
                 .build();
     }
 }
