@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.battles.battles.common.Status;
 import org.battles.battles.exception.exception.CSchoolNotFoundException;
 import org.battles.battles.exception.exception.CUserNotFoundException;
+import org.battles.battles.post.Dto.PostsResponseDto;
 import org.battles.battles.post.Dto.PostsSaveRequestDto;
 import org.battles.battles.school.School;
 import org.battles.battles.school.SchoolRepository;
@@ -23,7 +24,7 @@ public class PostService {
     private final UserService userService;
 
     @Transactional
-    public Long save(String email, PostsSaveRequestDto requestDto) {
+    public PostsResponseDto saveEntire(String email, PostsSaveRequestDto requestDto) {
 
         Optional<User> user = userService.getUserByEmail(email);
         if(user.isEmpty()) {
@@ -36,21 +37,20 @@ public class PostService {
                 .status(Status.ACTIVE)
                 .postType(PostType.ENTIRE)
                 .user(user.get())
+                .school(user.get().getSchool())
                 .build();
 
-        return postRepository.save(post).getPostId();
+        postRepository.save(post);
+
+
+        return new PostsResponseDto(post, user.get());
     }
 
     @Transactional
-    public Long saveSchool(String email, PostsSaveRequestDto requestDto, Long schoolId) {
+    public PostsResponseDto saveSchool(String email, PostsSaveRequestDto requestDto, Long schoolId) {
         Optional<User> user = userService.getUserByEmail(email);
         if(user.isEmpty()) {
             throw new CUserNotFoundException();
-        }
-
-        Optional<School> school = schoolRepository.findById(schoolId);
-        if(school.isEmpty()) {
-            throw new CSchoolNotFoundException();
         }
 
         Post post = Post.builder()
@@ -59,9 +59,12 @@ public class PostService {
                 .status(Status.ACTIVE)
                 .postType(PostType.SCHOOL)
                 .user(user.get())
-                .school(school.get())
+                .school(user.get().getSchool())
                 .build();
 
-        return postRepository.save(post).getPostId();
+        postRepository.save(post);
+
+
+        return new PostsResponseDto(post, user.get());
     }
 }

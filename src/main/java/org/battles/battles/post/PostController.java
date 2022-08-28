@@ -7,6 +7,7 @@ import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.battles.battles.post.Dto.PostsSaveRequestDto;
+import org.battles.battles.response.CommonResult;
 import org.battles.battles.response.ResponseService;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
@@ -27,13 +28,12 @@ public class PostController {
     })
     @ApiOperation(value = "전체 게시글 작성", notes = "회원정보와 제목, 내용을 입력하여 전체 게시글을 작성한다.")
     @PostMapping("/all")
-    public Long saveEntire(@RequestBody PostsSaveRequestDto requestDto) {
+    public CommonResult saveEntire(@RequestBody PostsSaveRequestDto requestDto) {
         Authentication authentication =  SecurityContextHolder.getContext().getAuthentication();
         String email = authentication.getName();
 
-
-
-        return postService.save(email, requestDto);
+        return responseService.getSingleResult(postService.saveEntire(email, requestDto));
+       // return postService.save(email, requestDto);
     }
 
     @ApiImplicitParams({
@@ -41,15 +41,15 @@ public class PostController {
     })
     @ApiOperation(value = "학교 게시글 작성", notes = "회원정보와 제목, 내용을 입력하여 학교 게시글을 작성한다.")
     @PostMapping("/{schoolId}")
-    public Long saveSchool(@RequestBody PostsSaveRequestDto requestDto, @PathVariable Long schoolId) {
+    public CommonResult saveSchool(@RequestBody PostsSaveRequestDto requestDto, @PathVariable Long schoolId) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String email = authentication.getName();
 
-        return postService.saveSchool(email, requestDto, schoolId);
+        return responseService.getSingleResult(postService.saveSchool(email, requestDto, schoolId));
 }
     @ApiOperation(value = "게시글 단건 조회", notes = "게시글 단건을 조회한다.")
     @GetMapping("/{postId}")
-    public Long getPostById(@PathVariable Long postId) {
+    public CommonResult getPostById(@PathVariable Long postId) {
 
     //return postService
         return postId;
