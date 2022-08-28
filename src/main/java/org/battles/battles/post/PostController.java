@@ -18,8 +18,7 @@ import org.springframework.security.core.Authentication;
 @RequiredArgsConstructor
 @RequestMapping("/api/post")
 @Slf4j
-public class PostController {
-    //
+public class PostController{
     private final ResponseService responseService;
 
     private final PostService postService;
@@ -27,13 +26,12 @@ public class PostController {
             @ApiImplicitParam(name = "AUTH-TOKEN", value = "로그인 성공 후 access_token", required = true, dataType = "String", paramType = "header")
     })
     @ApiOperation(value = "전체 게시글 작성", notes = "회원정보와 제목, 내용을 입력하여 전체 게시글을 작성한다.")
-    @PostMapping("/all")
+    @PostMapping("/entire")
     public CommonResult saveEntire(@RequestBody PostsSaveRequestDto requestDto) {
         Authentication authentication =  SecurityContextHolder.getContext().getAuthentication();
         String email = authentication.getName();
 
         return responseService.getSingleResult(postService.saveEntire(email, requestDto));
-       // return postService.save(email, requestDto);
     }
 
     @ApiImplicitParams({
@@ -51,26 +49,31 @@ public class PostController {
     @GetMapping("/{postId}")
     public CommonResult getPostById(@PathVariable Long postId) {
 
-
         return responseService.getSingleResult(postService.getPostById(postId));
     }
 
-    @ApiOperation(value = "모든 게시글 조회", notes = "모든 게시글을 조회한다.")
-    @GetMapping("/")
-    public void getAllPosts() {
-    }
+
 
     @ApiOperation(value = "전체 게시글 조회", notes = "전체 게시글을 조회한다.")
-    @GetMapping("/all")
-    public void getEntirePosts() {
+    @GetMapping("/entire")
+    public CommonResult getEntirePosts() {
 
+        return responseService.getListResult(postService.getPostAllEntire());
     }
 
     @ApiOperation(value = "학교별 게시글 조회", notes = "학교 게시글을 조회한다.")
-    @GetMapping("/{schoolId}")
-    public void getSchoolPosts(@PathVariable Long schoolId) {
+    @GetMapping("/school/{schoolId}")
+    public CommonResult getSchoolPosts(@PathVariable Long schoolId) {
 
+        return responseService.getListResult(postService.getPostAllSchool(schoolId));
     }
 
+
+@ApiOperation(value = "모든 게시글 조회", notes = "모든 게시글을 조회한다.")
+@GetMapping("/all")
+public CommonResult getAllPosts() {
+
+    return responseService.getListResult(postService.getPostAll());
+}
 
 }

@@ -153,4 +153,11 @@ public class ExceptionAdvice {
         return responseService.getFailResultWithMsg("해당 경기가 존재하지 않습니다.");
 
     }
+
+    @ExceptionHandler(CPostNotFoundException.class)
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    protected CommonResult PostNotFoundException(HttpServletRequest request, Exception e) {
+        return responseService.getFailResultWithMsg("해당 게시글이 존재하지 않습니다.");
+
+    }
 }
