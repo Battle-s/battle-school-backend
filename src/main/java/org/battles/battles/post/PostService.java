@@ -1,6 +1,7 @@
 package org.battles.battles.post;
 
 import lombok.RequiredArgsConstructor;
+import org.battles.battles.common.Status;
 import org.battles.battles.exception.exception.CSchoolNotFoundException;
 import org.battles.battles.exception.exception.CUserNotFoundException;
 import org.battles.battles.post.Dto.PostsSaveRequestDto;
@@ -23,21 +24,25 @@ public class PostService {
 
     @Transactional
     public Long save(String email, PostsSaveRequestDto requestDto) {
-        PostType postType;
-        postType = PostType.ENTIRE;
 
         Optional<User> user = userService.getUserByEmail(email);
         if(user.isEmpty()) {
             throw new CUserNotFoundException();
         }
-        return postRepository.save(requestDto.toEntity(postType, user.get())).getPostId();
+
+        Post post = Post.builder()
+                .title(requestDto.getTitle())
+                .content(requestDto.getContent())
+                .status(Status.ACTIVE)
+                .postType(PostType.ENTIRE)
+                .user(user.get())
+                .build();
+
+        return postRepository.save(post).getPostId();
     }
 
     @Transactional
     public Long saveSchool(String email, PostsSaveRequestDto requestDto, Long schoolId) {
-        PostType postType;
-        postType = PostType.SCHOOL;
-
         Optional<User> user = userService.getUserByEmail(email);
         if(user.isEmpty()) {
             throw new CUserNotFoundException();
@@ -47,6 +52,16 @@ public class PostService {
         if(school.isEmpty()) {
             throw new CSchoolNotFoundException();
         }
-        return postRepository.save(requestDto.toEntity2(postType, school.get(), user.get())).getPostId();
+
+        Post post = Post.builder()
+                .title(requestDto.getTitle())
+                .content(requestDto.getContent())
+                .status(Status.ACTIVE)
+                .postType(PostType.SCHOOL)
+                .user(user.get())
+                .school(school.get())
+                .build();
+
+        return postRepository.save(post).getPostId();
     }
 }

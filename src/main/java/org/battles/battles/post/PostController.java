@@ -25,11 +25,13 @@ public class PostController {
     @ApiImplicitParams({
             @ApiImplicitParam(name = "AUTH-TOKEN", value = "로그인 성공 후 access_token", required = true, dataType = "String", paramType = "header")
     })
-    @ApiOperation(value = "전체 게시글 작성", notes = "회원정보와 제목, 내을 입력하여 전체 게시글을 작성한다.")
+    @ApiOperation(value = "전체 게시글 작성", notes = "회원정보와 제목, 내용을 입력하여 전체 게시글을 작성한다.")
     @PostMapping("/all")
-    public Long saveAll(@RequestBody PostsSaveRequestDto requestDto) {
+    public Long saveEntire(@RequestBody PostsSaveRequestDto requestDto) {
         Authentication authentication =  SecurityContextHolder.getContext().getAuthentication();
         String email = authentication.getName();
+
+
 
         return postService.save(email, requestDto);
     }
@@ -37,7 +39,7 @@ public class PostController {
     @ApiImplicitParams({
             @ApiImplicitParam(name = "AUTH-TOKEN", value = "로그인 성공 후 access_token", required = true, dataType = "String", paramType = "header")
     })
-    @ApiOperation(value = "학교 게시글 작성", notes = "회원정보와 제목, 내을 입력하여 학교 게시글을 작성한다.")
+    @ApiOperation(value = "학교 게시글 작성", notes = "회원정보와 제목, 내용을 입력하여 학교 게시글을 작성한다.")
     @PostMapping("/{schoolId}")
     public Long saveSchool(@RequestBody PostsSaveRequestDto requestDto, @PathVariable Long schoolId) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -45,4 +47,30 @@ public class PostController {
 
         return postService.saveSchool(email, requestDto, schoolId);
 }
+    @ApiOperation(value = "게시글 단건 조회", notes = "게시글 단건을 조회한다.")
+    @GetMapping("/{postId}")
+    public Long getPostById(@PathVariable Long postId) {
+
+    //return postService
+        return postId;
+    }
+
+    @ApiOperation(value = "모든 게시글 조회", notes = "모든 게시글을 조회한다.")
+    @GetMapping("/")
+    public void getAllPosts() {
+    }
+
+    @ApiOperation(value = "전체 게시글 조회", notes = "전체 게시글을 조회한다.")
+    @GetMapping("/all")
+    public void getEntirePosts() {
+
+    }
+
+    @ApiOperation(value = "학교별 게시글 조회", notes = "학교 게시글을 조회한다.")
+    @GetMapping("/{schoolId}")
+    public void getSchoolPosts(@PathVariable Long schoolId) {
+
+    }
+
+
 }
