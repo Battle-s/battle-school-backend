@@ -51,8 +51,8 @@ public class PostController {
     @GetMapping("/{postId}")
     public CommonResult getPostById(@PathVariable Long postId) {
 
-    //return postService
-        return postId;
+
+        return responseService.getSingleResult(postService.getPostById(postId));
     }
 
     @ApiOperation(value = "모든 게시글 조회", notes = "모든 게시글을 조회한다.")

@@ -19,8 +19,6 @@ import java.util.Optional;
 public class PostService {
     private final PostRepository postRepository;
 
-    private final SchoolRepository schoolRepository;
-
     private final UserService userService;
 
     @Transactional
@@ -42,8 +40,7 @@ public class PostService {
 
         postRepository.save(post);
 
-
-        return new PostsResponseDto(post, user.get());
+        return new PostsResponseDto(post);
     }
 
     @Transactional
@@ -64,7 +61,12 @@ public class PostService {
 
         postRepository.save(post);
 
+        return new PostsResponseDto(post);
+    }
 
-        return new PostsResponseDto(post, user.get());
+    @Transactional
+    public PostsResponseDto getPostById(Long postId) {
+
+        return new
     }
 }

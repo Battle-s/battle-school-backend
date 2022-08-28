@@ -42,12 +42,12 @@ public class PostsResponseDto {
 
     private LocalDateTime modifiedAt;
 
-    public PostsResponseDto(Post post, User user) {
+    public PostsResponseDto(Post post) {
         this.postId = post.getPostId();
-        this.userId = user.getUserId();
-        this.nickName = user.getNickName();
-        this.schoolId = user.getSchool().getSchoolId();
-        this.schoolName = user.getSchool().getSchoolName();
+        this.userId = post.getUser().getUserId();
+        this.nickName = post.getUser().getNickName();
+        this.schoolId = post.getUser().getSchool().getSchoolId();
+        this.schoolName = post.getUser().getSchool().getSchoolName();
         this.title = post.getTitle();
         this.content = post.getContent();
         this.postType = post.getPostType();
