@@ -1,6 +1,7 @@
 package org.battles.battles.security.jwt;
 
 import io.swagger.annotations.Api;
+import org.battles.battles.exception.exception.CAccessDeniedException;
 import org.battles.battles.exception.exception.CAuthenticationEntryPointException;
 import org.battles.battles.response.CommonResult;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -19,7 +20,7 @@ public class ExceptionController {
 
     @GetMapping(value = "/accessdenied")
     public CommonResult accessdeniedException() {
-        throw new CAuthenticationEntryPointException();
+        throw new CAccessDeniedException();
     }
 
 }
