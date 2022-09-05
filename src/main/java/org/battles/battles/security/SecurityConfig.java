@@ -1,6 +1,8 @@
 package org.battles.battles.security;
 
 import lombok.RequiredArgsConstructor;
+import org.battles.battles.security.jwt.CAccessDeniedHandler;
+import org.battles.battles.security.jwt.CAuthenticationEntryPoint;
 import org.battles.battles.security.jwt.JwtAuthenticationFilter;
 import org.battles.battles.user.AuthService;
 import org.springframework.context.annotation.Bean;
@@ -51,6 +53,10 @@ public class SecurityConfig {
             .authorizeRequests()
             .antMatchers("/api/user/**").access("hasRole('ROLE_USER')")
             .anyRequest().permitAll()
+            .and()
+            .exceptionHandling().accessDeniedHandler(new CAccessDeniedHandler())
+            .and()
+            .exceptionHandling().authenticationEntryPoint(new CAuthenticationEntryPoint())
             .and()
             .addFilterBefore(new JwtAuthenticationFilter(authService),
                 UsernamePasswordAuthenticationFilter.class);
